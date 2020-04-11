@@ -1,0 +1,7 @@
+{
+	"host":"imap.gmail.com",
+	"port":993,
+	"ssl":true,
+	"username":"binaymishra136@gmail.com",
+	"password":"LearningMailApi"
+}

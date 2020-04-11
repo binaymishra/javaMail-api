@@ -12,23 +12,57 @@ plugins {
 
     // Apply the application plugin to add support for building a CLI application.
     id 'application'
+
+    // IntelliJ IDEA plugin
+    id 'idea'
+
 }
 
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+
+    // Use maven for resolving dependencies.
+    // https://mvnrepository.com/
+    mavenCentral()
+
+
 }
 
 dependencies {
     // This dependency is used by the application.
-    implementation 'com.google.guava:guava:28.2-jre'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'commons-io:commons-io:2.6'
 
+   
+   
+
+    // This dependency is from libs/ folder 
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+  
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 }
 
-application {
-    // Define the main class for the application.
-    mainClassName = 'bm.api.javamail.App'
+//Main class name
+mainClassName = "bm.api.javamail.App"
+
+
+task fatJar(type: Jar) {
+
+     manifest {
+        attributes 'Main-Class': "$mainClassName"
+    }
+
+    archiveClassifier = 'all'
+
+    from sourceSets.main.output
+
+    dependsOn configurations.runtimeClasspath
+
+    from {
+        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+    }
+
 }
